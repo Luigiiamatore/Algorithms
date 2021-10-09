@@ -40,13 +40,6 @@ int main(void) {
         }
     }
 
-    /*for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 7; j++){
-            printf("%d   ", cal[i][j]);
-        }
-        printf("\n");
-    }*/
-
     printf(" L   M   M   G   V   S   D\n ");
     for(int i = 0; i < 5; i ++) {
         for(int j = 0; j < 7; j++) {
