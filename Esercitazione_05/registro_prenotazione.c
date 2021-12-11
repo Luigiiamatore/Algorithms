@@ -20,7 +20,7 @@ void ***newBook(char ***book, int n) {
 void book_f(char **book, int k, char *name) {
     char **ptr = book + k;
     if (*ptr != NULL) {
-        printf("Posto già occupato!");
+        printf("Posto già occupato!\n");
         return;
     }
     *ptr = my_malloc((strlen(name)) * sizeof(char));
@@ -35,21 +35,25 @@ void cancel(char **book, int k) {
 }
 
 void move(char **book, int from, int to) {
+    if (*(book + to) != NULL) {
+        printf("Posto già prenotato!\n");
+        return;
+    }
     if (*(book + from) != NULL) {
         book[to] = book[from];
         book[from] = NULL;
     } else {
-        printf("move(%d,%d): errore.\n", from, to);
+        printf("move(%d,%d): errore.\n", from + 1, to + 1);
     }
     return;
 }
 
 //Stampa il contenuto del registro (posti prenotati)
 void printBook(char **book, int n) {
-    printf("\nREGISTER[0..%d]:\n", n);
+    printf("\nREGISTER[1..%d]:\n", n);
     for (int i = 0; i < n; i++) {
         if ((*(book + i)) != NULL)
-            printf("%d --> %s\n", i, *(book + i));
+            printf("%d --> %s\n", i + 1, *(book + i));
     }
     printf("\n");
     return;
@@ -73,26 +77,26 @@ int main() {
             case '+': // + k name --> book(k, name)
                 char *name;
                 scanf("%d %s", &k, name);
-                if (k >= 0 && k < n)
-                    book_f(book, k, name);
+                if (k > 0 && k <= n)
+                    book_f(book, k - 1, name);
                 else
-                    printf("Inserire un numero compreso tre 0 e %d.\n", n);
+                    printf("Inserire un numero compreso tre 1 e %d.\n", n);
                 break;
             case '-': // - k --> cancel(k)
                 scanf("%d", &k);
-                if (k < n)
-                    cancel(book, k);
+                if (k > 0 && k <= n)
+                    cancel(book, k - 1);
                 else
-                    printf("Inserire un numero compreso tre 0 e %d.\n", n);
+                    printf("Inserire un numero compreso tre 1 e %d.\n", n);
                 break;
             case 'm': // m from to ---> move from to
                 scanf("%d %d", &from, &to);
-                if (from < 0 || from > n)
+                if (from <= 0 || from > n)
                     printf("Registro sorgente non valido.\n");
-                else if (to < 0 || to > n)
+                else if (to <= 0 || to > n)
                     printf("Registro destinazione non valido.\n");
                 else
-                    move(book, from, to);
+                    move(book, from - 1, to - 1);
                 break;
             case 'p': // p ---> printBook()
                 printBook(book, n);
